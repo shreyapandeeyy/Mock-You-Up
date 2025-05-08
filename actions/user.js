@@ -71,11 +71,16 @@ export async function getUserOnboardingStatus() {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
-  const user = await db.user.findUnique({
-    where: { clerkUserId: userId },
-  });
+  try {
+    const user = await db.user.findUnique({
+      where: { clerkUserId: userId },
+    });
 
-  if (!user) throw new Error("User not found");
+    if (!user) throw new Error("User not found");
+  } catch (error) {
+    console.error("Database query error:", error);
+    throw new Error("Failed to fetch user");
+  }
 
   try {
     const user = await db.user.findUnique({
