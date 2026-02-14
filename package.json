@@ -1,6 +1,6 @@
 {
-  "name": "ai-career-coach",
-  "version": "0.1.0",
+  "name": "mock-you-up",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",

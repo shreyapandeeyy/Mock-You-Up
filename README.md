@@ -1,223 +1,401 @@
-[//]: # (![github-submission-banner]&#40;https://github.com/user-attachments/assets/a1493b84-e4e2-456e-a791-ce35ee2bcf2f&#41;)
+# Mock You Up
 
-# Mock You Up 🚀
+**A unified platform solving fragmented job-search workflows through contextual AI.**
 
-> Your Personalized Career Copilot
+[![Next.js](https://img.shields.io/badge/Next.js-15.5-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![Groq](https://img.shields.io/badge/Groq-LPU_Inference-orange?style=flat-square)](https://groq.com/)
+[![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748?style=flat-square&logo=prisma)](https://www.prisma.io/)
+[![Clerk](https://img.shields.io/badge/Clerk-Auth-6C47FF?style=flat-square&logo=clerk)](https://clerk.com/)
 
-Mock You Up is an intelligent career assistant meticulously crafted to empower professionals and job seekers with a suite of tools designed to forge compelling resumes, conquer interviews, and navigate their career journeys with unwavering confidence. Whether you're embarking on a career change, stepping into the professional world for the first time, or aiming for that next significant promotion, Mock You Up dynamically adapts to your unique aspirations and communicates in a way that resonates with your specific needs.
-
----
-
-## 📌 Problem Statement
-
-**Problem Statement 1 – Weave AI magic with Groq**
+[Quick Start](#setup) • [Architecture](#system-architecture) • [Deployment](#deployment)
 
 ---
 
-## 🎯 Objective
+## The Problem
 
-- **Problem:** Over 75% of students and job seekers feel lost when making career decisions or preparing for job applications.
-- **Solution:** Mock You Up offers intelligent, personalized career guidance powered by AI to simplify this journey.
-- **Target Users:** Students, recent graduates, and professionals seeking better career opportunities.
-- **Real-World Use Case:** Users can generate tailored resumes, cover letters, receive industry insights, and practice mock quizzes—all in one platform.
-- **Value Provided:** Saves time, reduces stress, improves job readiness, and empowers users with the tools and insights they need to succeed.
+Job seekers juggle multiple subscriptions for resume builders, cover letter templates, interview prep platforms, and career research tools. Each operates in isolation, forcing users to re-enter the same information and receive generic, context-free advice. The "wait and refresh" workflow of traditional AI tools breaks concentration during resume editing.
 
----
+## What This Solves
 
-## 🧠 Approach
-### 🧭 Approach
+**Mock You Up** unifies resume building, cover letter generation, interview practice, and industry insights into a single platform where user context flows between features. Enter your industry and experience once during onboarding—the system adapts resume suggestions, interview questions, and salary data automatically without re-prompting.
 
-- **Why this problem:** We noticed a huge gap in accessible, personalized career support, especially for students entering a competitive job market.
-- **Key challenges addressed:** Real-time AI response speed, user personalization, and simplifying complex tasks like resume building and skill alignment.
-- **Breakthroughs during hacking:**
-  - Integrated Groq’s low-latency AI for instant feedback.
-  - Developed modular AI agents for each core feature.
-  - Pivoted from a static tool to a dynamic, user-adaptive system after early testing.
+### Key Differentiation
+
+**Instant AI feedback during editing:** Integrated Groq's LPU inference instead of traditional GPT APIs to deliver sub-second responses while users type resumes. This eliminates the "generate, wait, review, regenerate" cycle that frustrates users in existing tools.
+
+**Contextual feature adaptation:** The system doesn't treat each feature as isolated. When you select "Software Engineering" as your industry, interview questions become technical, salary insights show engineering-specific data, and resume suggestions emphasize quantifiable achievements relevant to tech hiring managers.
+
+**Single onboarding, persistent intelligence:** User profile (industry, skills, experience) is captured once and referenced across all AI prompts, ensuring consistent, personalized outputs without repetitive form-filling.
 
 ---
 
-## 🛠️ Tech Stack
+## Core Features
 
-### Core Technologies Used:
+### Resume Builder with Real-Time AI Enhancement
 
-- **Frontend:**
-  - Next.js with TypeScript
-  - Tailwind CSS for styling
-  - Shadcn UI for beautifully-designed, accessible components
+Users create resumes using a markdown editor with live preview. As they write, the system provides instant AI suggestions for improving bullet points—transforming "worked on database optimization" into "Optimized PostgreSQL queries, reducing average response time by 40% and handling 2x traffic growth." The AI understands industry context from onboarding, so suggestions for a marketing role differ fundamentally from those for engineering.
 
-- **Backend:**
-  - Groq API for ultra-fast AI inference
+**Technical approach:** Groq's LPU inference provides sub-second response times necessary for real-time suggestions. Traditional GPT APIs with 3-5 second latencies would break the editing flow.
 
-- **Database:**
-  - Clerk (for user data and session history)
-  - Prisma (for resume, cover letter and quiz data)
-  - Local JSON/mock data for prototyping
+**Auto-save with intelligent upserts** ensures draft progress persists without manual saving. The database schema uses unique user-resume relationships, preventing duplicate entries while allowing updates.
 
-- **APIs:**
-  - Groq (LLM inference)
+### Cover Letter Generator with Job Description Analysis
 
-- **Hosting:**
-  - Vercel 
+Instead of generic templates, users input a job description and company name. The system analyzes requirements, cross-references with user experience from their profile, and generates tailored content highlighting relevant achievements. Output is markdown-formatted for easy editing before export.
 
----
+Generation takes under 5 seconds from submission to editable draft. Multiple versions can be saved per user, enabling A/B testing of different approaches for the same role.
 
-### Sponsor Technologies Used:
-- ✅ **Groq:** Used Groq’s ultra-fast LPU inference to power real-time resume building, cover letter generation, career recommendations, and mock quizzes. Its low latency enabled an interactive, seamless user experience with instant AI responses.
+### Interview Practice with Adaptive Questioning
 
----
+Generates 10 multiple-choice questions per session, tailored to user's industry and skill set. Questions include detailed explanations for correct and incorrect answers. Results are stored with scores and improvement tips for tracking progress over sessions.
 
-## ✨ Key Features
+**Adaptive difficulty:** While currently role-specific, the framework supports adjusting question complexity based on previous performance scores.
 
-### ✅ Smart Resume Builder
-Unleash the power of a meticulously crafted, personalized resume that speaks directly to your target industry. Mock You Up intelligently analyzes your provided information and elevates your content with quantifiable achievements, impactful action verbs, and critical industry-specific keywords that recruiters actively seek.
+### Industry Insights with Automated Updates
 
-- **Intelligent Upserts:** Seamlessly update and save your resume iterations, ensuring your progress is never lost.
-- **AI-Powered Enhancement:** Benefit from intelligent suggestions driven by Groq LLM (with the flexibility to integrate Google Gemini), providing insightful recommendations to strengthen your resume's impact.
-- **Secure User Authentication:** Built with Clerk for robust and reliable user authentication, safeguarding your personal information.
+Dashboard displays salary ranges, growth rates, trending skills, and market outlook for user's selected industry. Data refreshes weekly via background job (Inngest + Gemini) to keep insights current without user intervention.
 
-### ✅ Real-time Industry Insights
-Gain a competitive edge with up-to-the-minute, AI-driven insights directly relevant to your chosen domain. Stay informed about:
-
-- **Essential Skills:** Discover the core competencies and abilities that are highly valued in your industry.
-- **Latest Trends:** Keep abreast of the evolving landscape and emerging shifts shaping your field.
-- **Cutting-Edge Tools & Technologies:** Identify and understand the key technologies and tools that are gaining traction.
-- **Role-Specific Guidance:** Access tailored advice and recommendations specific to the roles you're targeting.
-
-These dynamic insights are seamlessly integrated across the Mock You Up platform, ensuring that all suggestions and improvements are contextually relevant and highly personalized.
-
-### ✅ Comprehensive Interview Prep
-Sharpen your interview skills and boost your confidence with realistic, role-specific, and scenario-based quiz rounds designed to simulate real-world interview experiences.
-
-- **Technical and Behavioral Readiness:** Prepare for both the technical intricacies and the behavioral nuances of your target roles.
-- **Personalized Feedback and Scoring:** Receive detailed feedback on your performance, highlighting areas of strength and opportunities for improvement.
-
-### ✅ Intelligent Cover Letter Creator
-Generate compelling and personalized cover letters that perfectly complement your resume and align seamlessly with the specific requirements of each job description.
-
-- **AI-Generated Tailored Content:** Leverage the power of AI to craft content that directly addresses the job requirements and highlights your most relevant experience.
-- **Clear Formatting and Concise Language:** Ensure your cover letters are professionally formatted and articulate your qualifications with clarity and impact.
-- **Fully Editable and Easily Downloadable Output:** Retain complete control over your cover letters with easy editing capabilities and convenient download options.
+Users can also trigger on-demand insight generation via Groq for immediate market data when researching a career pivot.
 
 ---
 
-[//]: # (## 📝 Presentation Slides)
-
-[//]: # ([Presentation]&#40;https://docs.google.com/presentation/d/1vOC3aXTavbU3RGZ_ZCfxL7bqDyr2DfLul_s0CfFoDYE/edit?usp=sharing&#41;)
-
-[//]: # (Explore our detailed presentation to understand the vision, features, and technology behind Mock You Up.)
-
-
-### Configuration: Setting up your `.env` file
-
-Before running Mock You Up, ensure you create a `.env` file in the root of your project directory and populate it with the following essential environment variables:
+## System Architecture
 
 ```
-DATABASE_URL=
+┌─────────────────────────────────────────────────────────────┐
+│                        Frontend (Next.js 15)                 │
+│  ┌──────────┬──────────┬──────────┬──────────┬──────────┐  │
+│  │Dashboard │ Resume   │ Cover    │Interview │Onboarding│  │
+│  │          │ Builder  │ Letter   │  Prep    │          │  │
+│  └──────────┴──────────┴──────────┴──────────┴──────────┘  │
+└───────────────────────────┬─────────────────────────────────┘
+                            │
+            ┌───────────────┼───────────────┐
+            │               │               │
+┌───────────▼──────┐ ┌──────▼──────┐ ┌─────▼────────┐
+│  Clerk Auth      │ │   Prisma    │ │  Groq API    │
+│  User Sessions   │ │   ORM       │ │  Llama 3.3   │
+└──────────────────┘ └──────┬──────┘ └──────────────┘
+                            │
+                    ┌───────▼────────┐
+                    │   PostgreSQL   │
+                    │  (Neon/Vercel) │
+                    └────────────────┘
+                            ▲
+                            │
+                    ┌───────┴────────┐
+                    │    Inngest     │
+                    │  Cron Jobs +   │
+                    │  Gemini API    │
+                    └────────────────┘
+```
 
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
-CLERK_SECRET_KEY=
+**Data Flow:**
 
-NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
-NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/onboarding
-NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/onboarding
+1. Clerk manages user authentication and sessions
+2. Groq API (Llama 3.3 70B) handles all user-facing AI features with sub-second latency
+3. Prisma + PostgreSQL stores user profiles, resumes, cover letters, and assessment results
+4. Inngest + Gemini runs weekly background jobs to refresh industry insights
 
-GEMINI_API_KEY= (Not Needed)
+---
 
-GROQ_API_KEY=
+## Technical Architecture
+
+### Frontend Stack
+
+**Next.js 15** with App Router and React 19 enables Server Components for initial page loads while maintaining client interactivity where needed. Resume editing uses client components for responsiveness; data fetching happens server-side to reduce bundle size.
+
+**Tailwind CSS + Shadcn UI** provides consistent styling without runtime CSS-in-JS overhead. Component library is copy-paste (not npm installed), allowing customization without dependency bloat. **Lucide** icons are tree-shakeable, importing only used symbols.
+
+### Data Layer
+
+**PostgreSQL via Neon** provides serverless scaling without connection pooling issues that plague traditional managed databases. Database doesn't pause or delete data (critical after previous Supabase issues). Connection string uses sslmode=require for secure communication.
+
+**Prisma ORM** generates type-safe client from schema, catching database-code mismatches at compile time. Migrations folder tracks schema evolution. Uses `@@unique` constraints to prevent duplicate user resumes while allowing upserts for autosave.
+
+**Clerk** manages authentication with webhook support for syncing user data. Custom domain configuration (myu.shreyapandey.me) requires updating allowed domains in dashboard. Provides pre-built React components for sign-in/sign-up flows with full customization support.
+
+### AI Infrastructure
+
+**Groq API (Llama 3.3 70B)** handles all real-time features. Choice driven by LPU inference delivering responses in under 1 second—necessary for resume suggestions that feel instant. Traditional GPT-4 latencies (3-5s) break editing flow. Groq's rate limits (30 req/min on free tier) are sufficient for single-user typing cadence.
+
+**Google Gemini 1.5 Flash** runs only in background jobs via Inngest. Weekly industry data refreshes don't need sub-second performance, so Gemini's lower cost and larger context window fit better. Separation prevents Groq quota exhaustion from scheduled tasks.
+
+**Inngest** orchestrates background workflows with automatic retries. Cron job `0 0 * * 0` (Sunday midnight UTC) triggers industry updates for all users. Handles failures gracefully—if Gemini API times out, job reschedules without corrupting database state.
+
+### Deployment
+
+**Vercel** deployment uses `vercel.json` to run `prisma generate` before build (ensures Prisma Client matches schema). Environment variables loaded from Vercel dashboard, not committed to repo. Custom domain requires DNS CNAME pointing to Vercel + Clerk domain allowlist update.
+
+### Key Dependencies
+
+```json
+{
+  "@clerk/nextjs": "^6.9.10",        // Auth with custom domain support
+  "@prisma/client": "^6.2.1",        // Generated DB client
+  "groq-sdk": "^0.19.0",             // Groq LPU inference
+  "@google/generative-ai": "^0.21.0", // Gemini for background jobs
+  "inngest": "^3.29.3",              // Workflow orchestration
+  "next": "^15.4.0",                 // App Router + Server Components
+  "react": "^19.0.0",                // Concurrent features
+  "react-hook-form": "^7.54.2",      // Form state management
+  "zod": "^3.24.1",                  // Schema validation
+  "recharts": "^2.15.0",             // Performance charts
+  "jspdf": "^2.5.2"                  // Client-side PDF export
+}
 ```
 
 ---
 
-**Note:** Make sure to replace the placeholder values (e.g., `YOUR_POSTGRESQL_CONNECTION_STRING`) with your actual credentials and API keys.
+## Setup
+
+**Prerequisites:** Node.js 18+, PostgreSQL database (Neon recommended), API keys from Clerk and Groq
+
+1. Clone and install:
+   ```bash
+   git clone https://github.com/shreyapandeeyy/Mock-You-Up.git
+   cd Mock-You-Up
+   npm install
+   ```
+
+2. Create `.env` file (template in `.env.production.template`):
+   ```env
+   DATABASE_URL=postgresql://user:password@host:5432/dbname?sslmode=require
+   
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_xxx
+   CLERK_SECRET_KEY=sk_test_xxx
+   NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+   NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+   NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/onboarding
+   NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/onboarding
+   
+   GROQ_API_KEY=gsk_xxx
+   GEMINI_API_KEY=AIzaSyxxx  # Optional, only needed for background industry updates
+   ```
+
+3. Initialize database:
+   ```bash
+   npx prisma db push      # Creates tables from schema
+   npx prisma generate     # Generates type-safe Prisma Client
+   ```
+
+4. Run development server:
+   ```bash
+   npm run dev
+   # Or specify port: npm run dev -- -p 7000
+   ```
+
+### Database Provider Setup
+
+**Neon (recommended):** Sign up at neon.tech, create project, copy connection string to DATABASE_URL. Neon never pauses or deletes databases on free tier.
+
+**Vercel Postgres:** In Vercel dashboard, go to Storage → Create Database → Postgres. Connection string appears in `.env.local` tab.
+
+### Clerk Configuration
+
+1. Create account at clerk.com, create new application
+2. In dashboard: Configure → Paths, set sign-in URL to `/sign-in` and after-sign-in to `/onboarding`
+3. Copy publishable key and secret key to `.env`
+4. For custom domain: Settings → Domains, add your domain (e.g., `myu.shreyapandey.me`) to allowed list
+5. (Optional) Customize sign-in/sign-up pages in Clerk dashboard
+
+### Groq API Setup
+
+1. Sign up at [console.groq.com](https://console.groq.com)
+2. Generate API key and add to `.env` as `GROQ_API_KEY`
+3. Free tier includes generous usage limits
 
 ---
 
-# Getting Started: Installation Guide
+## Project Structure
 
-Follow these straightforward steps to get Mock You Up up and running on your local machine:
-
-1.  **Clone the Repository:**
-    ```bash
-    git clone [https://github.com/shreyapandeeyy/Mock-You-Up.git](https://github.com/shreyapandeeyy/Mock-You-Up.git)
-    ```
-
-2.  **Navigate to the Project Directory:**
-    ```bash
-    cd nuvita-ai
-    ```
-
-3.  **Install Dependencies:**
-    ```bash
-    npm install
-    ```
-
-4.  **Start the Development Server:**
-    ```bash
-    npm run dev
-    ```
-
-Once the development server is running, you can access Mock You Up in your web browser, typically at `http://localhost:3000`.
-
-## 🛡️ Our Commitment to Security & Privacy
-
-Your security and privacy are at the core of Mock You Up's design philosophy. We leverage the industry-leading authentication service, Clerk, to ensure the robust protection of your account and personal information. You can be confident that all user data is securely stored and will never be shared with any external third parties. Your professional journey is yours, and we are committed to keeping your data private.
-
----
-
-## 🧬 Future Scope
-
-List improvements, extensions, or follow-up features:
-
-- 📈 **More Integrations**  
-  Integrate with platforms like LinkedIn, GitHub, and job boards for one-click profile syncing and job application tracking.
-
-- 🛡️ **Security Enhancements**  
-  Implement OAuth-based login, role-based access, and data encryption to protect user data and ensure privacy compliance.
-
-- 🌐 **Localization / Broader Accessibility**  
-  Support multiple languages and regional career databases to serve a global audience more effectively.
-
-- 🤖 **Voice & Chat Assistant**  
-  Introduce a conversational AI to guide users through career decisions interactively.
-
-- 📊 **User Analytics Dashboard**  
-  Provide insights on skill gaps, improvement areas, and career readiness progress through visual analytics.
-
----
-## 📎 Resources / Credits
-
-- **APIs or Datasets Used:**
-  - Groq API for ultra-fast AI inference, resume and letter generation, insights, and quiz content
-
-- **Open Source Libraries or Tools Referenced:**
-  - Clerk for authentication and user management
-  - Shadcn UI for modern, accessible UI components
-  - Prisma for database ORM and type-safe queries
-  - Tailwind CSS for utility-first styling
-
-- **Acknowledgements:**
-  - Groq Hackathon team for organizing and providing the platform
-  - BioMorph AI team members for collaboration and creativity
-  - Open-source community for tools and inspiration
-
----
-## 🏁 Final Words
-
-### 🤝 Join Our Community: Contributing to Mock Yo uUp
-
-We believe in the power of collaboration and enthusiastically welcome contributions from the developer community! If you are passionate about empowering career growth and have ideas or improvements to share, we encourage you to get involved. Here's how you can contribute:
-
-1.  **Fork the Repository:** Begin by creating your own copy of the Mock You Up repository on GitHub.
-2.  **Create a Feature Branch:** Branch off the `main` branch to isolate your changes and keep the main codebase clean. Choose a descriptive name for your branch (e.g., `feature/new-interview-module`).
-3.  **Implement Your Enhancements:** Develop your features, fix bugs, or implement improvements. Ensure your code adheres to best practices and includes relevant tests.
-4.  **Test Thoroughly:** Verify that your changes function as expected and do not introduce any regressions.
-5.  **Submit a Pull Request:** Once you're confident in your contributions, submit a pull request to the `main` branch of the original Mock You Up repository. Provide a clear and concise description of your changes and their purpose.
-
-We deeply appreciate your dedication to making Mock You Up an even more valuable resource for professionals worldwide!
+```
+Mock-You-Up/
+├── app/                          # Next.js App Router
+│   ├── (auth)/                   # Auth pages (sign-in/up)
+│   ├── (main)/                   # Protected routes
+│   │   ├── dashboard/
+│   │   ├── resume/
+│   │   ├── interview/
+│   │   ├── ai-cover-letter/
+│   │   └── onboarding/
+│   ├── api/                      # API routes
+│   ├── layout.js                 # Root layout
+│   └── page.js                   # Landing page
+├── actions/                      # Server Actions
+│   ├── dashboard.js              # Industry insights
+│   ├── resume.js                 # Resume CRUD
+│   ├── cover-letter.js           # Cover letter generation
+│   ├── interview.js              # Quiz generation
+│   └── user.js                   # User profile
+├── components/                   # React components
+│   ├── ui/                       # Shadcn UI components
+│   └── ...                       # Custom components
+├── lib/                          # Utilities
+│   ├── prisma.js                 # Database client
+│   ├── checkUser.js              # Auth helpers
+│   └── inngest/                  # Background jobs
+├── prisma/
+│   └── schema.prisma             # Database schema
+├── public/                       # Static assets
+└── middleware.js                 # Clerk middleware
+```
 
 ---
 
-## 📄 Licensing Information
+## Database Schema
+```prisma
+model User {
+  id              String           @id @default(uuid())
+  clerkUserId     String           @unique
+  email           String           @unique
+  name            String?
+  industry        String?
+  bio             String?
+  experience      Int?
+  skills          String[]
+  assessments     Assessment[]
+  resume          Resume?
+  coverLetter     CoverLetter[]
+}
 
-Mock You Up is open-source software licensed under the **MIT License**. This permissive license grants you the freedom to use, modify, and distribute the software, even for commercial purposes, as long as you retain the original copyright and license notice. For complete details, please refer to the `LICENSE` file included in the project repository.
+model Resume {
+  id          String    @id @default(cuid())
+  userId      String    @unique
+  content     String    @db.Text
+  atsScore    Float?
+  feedback    String?
+}
+
+model CoverLetter {
+  id              String    @id @default(cuid())
+  userId          String
+  content         String
+  jobDescription  String?
+  companyName     String
+  jobTitle        String
+  status          String    @default("draft")
+}
+
+model Assessment {
+  id            String    @id @default(cuid())
+  userId        String
+  quizScore     Float
+  questions     Json[]
+  category      String
+  improvementTip String?
+}
+
+model IndustryInsight {
+  id               String    @id @default(cuid())
+  industry         String    @unique
+  salaryRanges     Json[]
+  growthRate       Float
+  demandLevel      String
+  topSkills        String[]
+  marketOutlook    String
+  keyTrends        String[]
+}
+```
+
+---
+
+## Deployment
+
+### Vercel Deployment
+
+1. Push repository to GitHub
+   ```bash
+   git add .
+   git commit -m "Ready for production"
+   git push origin main
+   ```
+
+2. Import to Vercel (vercel.com → Import Project → select repository). Vercel auto-detects Next.js configuration.
+
+3. Add environment variables in Vercel dashboard (Settings → Environment Variables):
+   ```env
+   DATABASE_URL=postgresql://...
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_live_...
+   CLERK_SECRET_KEY=sk_live_...
+   GROQ_API_KEY=gsk_...
+   GEMINI_API_KEY=AIzaSy...  # Optional
+   ```
+
+4. Deploy. Build takes ~2 minutes.
+
+**Note on Clerk production keys:** Switch from `pk_test_` to `pk_live_` keys when deploying. Test keys won't work in production.
+
+
+---
+
+## Development Commands
+
+```bash
+npm run dev               # Start dev server (default port 3000)
+npm run dev -- -p 7000    # Start on custom port
+npm run build             # Production build
+npm run start             # Serve production build
+npm run lint              # Run ESLint
+
+npx prisma generate       # Generate Prisma Client
+npx prisma db push        # Push schema changes to database
+npx prisma studio         # Open database GUI
+npx prisma migrate dev    # Create migration
+```
+
+---
+
+## Design Decisions
+
+**Real-time AI inference:** Chose Groq's LPU over traditional GPT APIs based on latency requirements. Resume editing needed sub-second feedback to avoid breaking user flow—waiting 3-5 seconds after each keystroke was unacceptable. Groq's 18x speed improvement made real-time suggestions viable.
+
+**Context persistence:** Rather than treating features as isolated tools, system captures user industry/experience once during onboarding. All subsequent AI generations (resume bullets, cover letter content, interview questions, salary insights) reference this context automatically. Prevents repetitive form-filling and improves personalization accuracy.
+
+**Database uniqueness constraints:** Resume table uses `userId @unique` to enforce one-resume-per-user while supporting upserts for autosave. Prevents duplicate entries that would confuse users and complicate data fetching. CoverLetter allows multiple entries per user since same person applies to different roles.
+
+**Markdown over rich text editors:** Used markdown for content editing instead of WYSIWYG editors. Markdown is parse-able by AI models, enables version control, and results in cleaner database storage. Preview pane provides visual feedback without editor complexity.
+
+---
+
+## Contributing
+
+Fork repository, create feature branch (`git checkout -b feature/name`), make changes, test locally, commit (`git commit -m "Description"`), push to your fork, open Pull Request.
+
+Follow existing code patterns (Server Actions for mutations, Zod schemas for validation, Prisma for database). Ensure `npm run lint` passes. Update documentation if adding features.
+
+---
+
+## Roadmap Considerations
+
+Potential future directions (not committed):
+
+- LinkedIn/GitHub integration for profile import
+- Voice interview practice with speech analysis
+- Application tracking across multiple job boards
+- Mobile native apps for iOS/Android
+- Collaborative resume review with mentors
+- Multi-language support for international users
+
+Focus remains on core workflows: resume building, cover letters, interview prep, industry insights. New features evaluated based on whether they reduce friction in job search process.
+
+---
+
+## Credits
+
+**APIs:** Groq (Llama 3.3 70B inference), Google Gemini (background jobs), Clerk (authentication), Neon (PostgreSQL)
+
+**Frameworks:** Next.js, React, Prisma ORM, Tailwind CSS, Shadcn UI, Inngest
+
+Built for learning and solving real job-search workflow problems encountered during career transitions.
+
+---
+
+## License
+
+MIT License - see [LICENSE](LICENSE) file. Free to use, modify, and distribute with attribution.
+
+---
+
+**Issues:** [GitHub Issues](https://github.com/shreyapandeeyy/Mock-You-Up/issues)  
+**Discussions:** [GitHub Discussions](https://github.com/shreyapandeeyy/Mock-You-Up/discussions)
